@@ -15,7 +15,6 @@ import javax.validation.constraints.Size;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/test/1.0")
 public class ToDoResource {
 
     @Autowired

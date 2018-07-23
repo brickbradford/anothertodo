@@ -90,7 +90,7 @@ public class ToDoResourceIT {
     }
 
     private String createURLWithPort(String uri) {
-        return "http://127.0.0.1:" + port + "/test/1.0" + uri;
+        return "http://127.0.0.1:" + port + uri;
     }
 
 }
