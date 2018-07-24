@@ -11,7 +11,6 @@ import todo.service.ToDoDetail;
 import todo.service.ToDoRepository;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Size;
 import java.util.Optional;
 
 @RestController
@@ -23,7 +22,7 @@ public class ToDoResource {
     @GetMapping(path = "/tasks/validateBrackets",
             consumes= {"text/plain", "application/*"},
             produces = "application/json")
-    public Brackets checkBrackets(@RequestParam @Size(max=50) String input) {
+    public Brackets checkBrackets(@RequestParam String input) {
         return new Brackets(input, BalancedBracketChecker.isBalanced(input));
     }
 
