@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import todo.json.*;
 
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ToDoResourceIT {
@@ -55,10 +56,20 @@ public class ToDoResourceIT {
 
         // Update one
         String text2 = "hello test2";
-        ToDoUpdate update = new ToDoUpdate(text2, true);
+        ToDoUpdate update = new ToDoUpdate(text2, null);
         HttpEntity<ToDoUpdate> httpEntity = new HttpEntity<>(update);
         // Straight up HttpMethod.PATCH doesn't appear to work for RestTemplate
         // https://stackoverflow.com/questions/29447382/resttemplate-patch-request
+        responseEntity = restTemplate.exchange(
+                createURLWithPort("/todo/" + oid + "?_method=patch"), HttpMethod.POST, httpEntity, ToDo.class);
+        todo = responseEntity.getBody();
+        Assert.assertNotNull(todo);
+        Assert.assertTrue(oid.equals(todo.id));
+        Assert.assertTrue(text2.equals(todo.text));
+        Assert.assertFalse(todo.isCompleted);
+
+        update = new ToDoUpdate(null, true);
+        httpEntity = new HttpEntity<>(update);
         responseEntity = restTemplate.exchange(
                 createURLWithPort("/todo/" + oid + "?_method=patch"), HttpMethod.POST, httpEntity, ToDo.class);
         todo = responseEntity.getBody();
@@ -90,7 +101,7 @@ public class ToDoResourceIT {
     }
 
     private String createURLWithPort(String uri) {
-        return "http://127.0.0.1:" + port + uri;
+        return "http://127.0.0.1:" + port  + "/test/1.0" + uri;
     }
 
 }

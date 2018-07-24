@@ -20,7 +20,9 @@ public class ToDoResource {
     @Autowired
     private ToDoRepository todoRepository;
 
-    @GetMapping("/tasks/validateBrackets")
+    @GetMapping(path = "/tasks/validateBrackets",
+            consumes= {"text/plain", "application/*"},
+            produces = "application/json")
     public Brackets checkBrackets(@RequestParam @Size(max=50) String input) {
         return new Brackets(input, BalancedBracketChecker.isBalanced(input));
     }
@@ -38,7 +40,9 @@ public class ToDoResource {
 
     @PatchMapping("/todo/{id}")
     public ToDo update(@Valid @RequestBody ToDoUpdate todo, @PathVariable long id) {
-        return buildToDo(id, checkToDo(id, todoRepository.update(id, todo.text, todo.isCompleted)));
+        return buildToDo(id, checkToDo(id,
+                todoRepository.update(id, Optional.ofNullable(todo.text),
+                        Optional.ofNullable(todo.isCompleted))));
     }
 
     protected ToDoDetail checkToDo(long id, Optional<ToDoDetail> todo) {

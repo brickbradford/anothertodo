@@ -22,7 +22,7 @@ public class ToDoRepositoryImpl implements ToDoRepository {
         return nextId;
     }
 
-    public Optional<ToDoDetail> update(Long id, String text, Boolean isCompleted) {
+    public Optional<ToDoDetail> update(Long id, Optional<String> text, Optional<Boolean> isCompleted) {
         Optional<ToDoDetail> detail = find(id);
         if (!detail.isPresent()) {
             return detail;
@@ -30,8 +30,10 @@ public class ToDoRepositoryImpl implements ToDoRepository {
         ToDoDetail todo = detail.get();
         // Avoid races on update
         synchronized (updateGuard) {
-            todo.setCompleted(isCompleted);
-            todo.setText(text);
+            if (isCompleted.isPresent())
+                todo.setCompleted(isCompleted.get());
+            if (text.isPresent())
+                todo.setText(text.get());
         }
         return Optional.of(todo);
     }

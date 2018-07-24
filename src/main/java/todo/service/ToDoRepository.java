@@ -11,6 +11,6 @@ public interface ToDoRepository {
 
     Long add(ToDoDetail todo);
 
-    Optional<ToDoDetail> update(Long id, String text, Boolean isCompleted);
+    Optional<ToDoDetail> update(Long id, Optional<String> text, Optional<Boolean> isCompleted);
 
 }

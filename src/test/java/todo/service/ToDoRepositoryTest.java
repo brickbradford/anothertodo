@@ -26,7 +26,7 @@ public class ToDoRepositoryTest {
         Assert.assertFalse(detail.isCompleted());
 
         final String text2 = "todo1-updated";
-        repo.update(oid, text2, true);
+        repo.update(oid, Optional.of(text2), Optional.of(true));
         optToDo = repo.find(oid);
         Assert.assertTrue(optToDo.isPresent());
         detail = optToDo.get();
